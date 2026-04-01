@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build-DirectX",
+            "type": "shell",
+            "command": "cl.exe",
+            "args": [
+                "/Zi",
+                "/EHsc",
+                "/nologo",
+                "/DUNICODE",   
+                "/D_UNICODE",  
+                "/Fe:${workspaceFolder}/bin/MYSTG.exe",
+                "${workspaceFolder}/src/main.cpp",
+                "${workspaceFolder}/src/engine/DirectXManager.cpp",
+                "user32.lib",
+                "gdi32.lib",
+                "d3d11.lib",
+                "dxgi.lib"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$msCompile"]
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+# ビルド生成物
+bin/
+*.exe
+*.obj
+*.pdb
+*.ilk
+
+# VS Codeの一時ファイル
+.history/
