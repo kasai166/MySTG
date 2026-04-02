@@ -1,12 +1,15 @@
 #include <windows.h>
 #include "engine/DirectXManager.h"
 #include "game/BulletManager.h"
+#include "game/EnemyManager.h"
 
 #pragma comment(lib, "winmm.lib")
 #pragma execution_character_set("utf-8")
 
 DirectXManager g_dx;
 BulletManager g_bulletMgr;
+EnemyManager g_enemyMgr;
+int g_stageFrame = 0; 
 
 // プレイヤー設定
 float g_playerX = 640.0f;
@@ -55,6 +58,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR lpCmd, int nShow)
         return 0;
     }
 
+    g_enemyMgr.LoadStageData();
+
     ShowWindow(hWnd, nShow);
     timeBeginPeriod(1);
 
@@ -98,6 +103,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR lpCmd, int nShow)
             }
 
             g_bulletMgr.Update();
+            g_enemyMgr.Update(g_stageFrame);
 
             g_dx.BeginRender();
 
@@ -105,8 +111,11 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR lpCmd, int nShow)
 
             g_bulletMgr.Draw(g_dx);
 
+            g_enemyMgr.Draw(g_dx);
+
             g_dx.EndRender();
             
+            g_stageFrame++;
             DWORD frameTime = timeGetTime() - frameStartTime;
             if (frameTime < targetFrameTime) {
                 Sleep(targetFrameTime - frameTime); // 足りない時間分だけ待機

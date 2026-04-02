@@ -1,6 +1,7 @@
 #include "DirectXManager.h"
 #include <d3dcompiler.h>
-#include <wrl.h> // ComPtrを使用するために必要
+#include <wrl.h> 
+#include <vector>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -113,4 +114,47 @@ void DirectXManager::DrawPlayer(float x, float y, float width, float height) {
     m_context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
     m_context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
     m_context->Draw(4, 0);
+}
+
+void DirectXManager::DrawEnemyCircle(float x, float y, float radius, int divisions) {
+    float nx = (x / 1280.0f) * 2.0f - 1.0f;
+    float ny = 1.0f - (y / 720.0f) * 2.0f;
+    float rx = radius / 1280.0f * 2.0f;
+    float ry = radius / 720.0f * 2.0f;
+
+    std::vector<Vertex> vertices;
+
+    vertices.push_back({ {nx, ny, 0.0f}, {1, 0, 0, 1} }); 
+
+    for (int i = 0; i <= divisions; ++i) {
+        float theta = (2.0f * 3.1415926f * i) / divisions;
+        vertices.push_back({
+            { nx + rx * cosf(theta), ny + ry * sinf(theta), 0.0f },
+            { 1, 1, 1, 1 } 
+        });
+    }
+    D3D11_BUFFER_DESC bd = {};
+    bd.Usage = D3D11_USAGE_DEFAULT;
+    bd.ByteWidth = sizeof(Vertex) * (UINT)vertices.size();
+    bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+    D3D11_SUBRESOURCE_DATA sd = {};
+    sd.pSysMem = vertices.data();
+    ComPtr<ID3D11Buffer> vertexBuffer;
+    m_device->CreateBuffer(&bd, &sd, &vertexBuffer);
+
+    UINT stride = sizeof(Vertex);
+    UINT offset = 0;
+    m_context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+    m_context->IASetInputLayout(m_inputLayout.Get());
+    
+  
+    m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+    
+    m_context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
+    m_context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+    
+
+    m_context->Draw((UINT)vertices.size(), 0);    // 作成した頂点数分描画
+
 }

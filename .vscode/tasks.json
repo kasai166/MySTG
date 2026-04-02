@@ -18,7 +18,9 @@
                 "${workspaceFolder}\\src\\engine\\DirectXManager.cpp",
                 "${workspaceFolder}\\src\\game\\Bullet.cpp",
                 "${workspaceFolder}\\src\\game\\BulletManager.cpp",
-                
+                "${workspaceFolder}\\src\\game\\Enemy.cpp",
+                "${workspaceFolder}\\src\\game\\EnemyManager.cpp",
+
                 "user32.lib",
                 "gdi32.lib",
                 "winmm.lib",
