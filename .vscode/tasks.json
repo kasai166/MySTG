@@ -12,14 +12,10 @@
                 "/utf-8",
                 "/DUNICODE",
                 "/D_UNICODE",
-                // 1. 生成されるエグゼの出力先を bin に指定
                 "/Fe${workspaceFolder}\\bin\\main.exe",
-                // 2. 中間ファイル(.obj)の出力先も bin に指定して src を汚さない
                 "/Fo${workspaceFolder}\\bin\\",
-                // 3. コンパイル対象のソースファイル
                 "${workspaceFolder}\\src\\main.cpp",
                 "${workspaceFolder}\\src\\engine\\DirectXManager.cpp",
-                // 4. リンクするライブラリ
                 "user32.lib",
                 "gdi32.lib",
                 "winmm.lib",
@@ -28,7 +24,6 @@
                 "d3dcompiler.lib"
             ],
             "options": {
-                // 実行時のカレントディレクトリを bin に設定
                 "cwd": "${workspaceFolder}\\bin"
             },
             "problemMatcher": [

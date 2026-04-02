@@ -1,5 +1,5 @@
 struct VS_INPUT {
-    float3 Pos : POSITION; // C++側と合わせてfloat3に修正
+    float3 Pos : POSITION; 
     float4 Col : COLOR;
 };
 

@@ -34,7 +34,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR lpCmd, int nShow) {
     );
     if (!hWnd) return 0;
 
-    // ★ 初期化失敗時にエラーを出して終了する
+    // 初期化失敗時
     if (FAILED(g_dx.Init(hWnd))) {
         MessageBoxW(hWnd, L"DirectXの初期化に失敗しました。終了します。", L"Fatal Error", MB_OK);
         return 0;

@@ -43,7 +43,6 @@ HRESULT DirectXManager::Init(HWND hWnd) {
     ComPtr<ID3DBlob> vsBlob, psBlob, errorBlob;
     
     // --- 頂点シェーダーの読み込み ---
-    // パスを "engine/BasicShader.hlsl" に統一
     hr = D3DCompileFromFile(L"engine/BasicShader.hlsl", nullptr, nullptr, "VS", "vs_5_0", 0, 0, &vsBlob, &errorBlob);
     if (FAILED(hr)) {
         if (errorBlob) MessageBoxA(hWnd, (char*)errorBlob->GetBufferPointer(), "VS Compile Error", MB_OK);
@@ -53,7 +52,6 @@ HRESULT DirectXManager::Init(HWND hWnd) {
     m_device->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_vertexShader);
 
     // --- ピクセルシェーダーの読み込み ---
-    // ここも "engine/BasicShader.hlsl" に修正（src/ を削除）
     hr = D3DCompileFromFile(L"engine/BasicShader.hlsl", nullptr, nullptr, "PS", "ps_5_0", 0, 0, &psBlob, &errorBlob);
     if (FAILED(hr)) {
         if (errorBlob) MessageBoxA(hWnd, (char*)errorBlob->GetBufferPointer(), "PS Compile Error", MB_OK);
@@ -72,8 +70,8 @@ HRESULT DirectXManager::Init(HWND hWnd) {
     return S_OK;
 }
 
+// 描画開始前の画面クリア
 void DirectXManager::BeginRender() {
-    // 画面を暗い青で塗りつぶす
     float clearColor[] = { 0.1f, 0.1f, 0.3f, 1.0f };
     m_context->ClearRenderTargetView(m_renderTarget.Get(), clearColor);
 }
