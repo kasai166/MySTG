@@ -18,6 +18,7 @@
                 "${workspaceFolder}\\src\\engine\\DirectXManager.cpp",
                 "${workspaceFolder}\\src\\game\\Bullet.cpp",
                 "${workspaceFolder}\\src\\game\\BulletManager.cpp",
+                
                 "user32.lib",
                 "gdi32.lib",
                 "winmm.lib",
