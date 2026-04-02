@@ -2,7 +2,6 @@
 #include <d3dcompiler.h>
 #include <wrl.h> // ComPtrを使用するために必要
 
-// ライブラリのリンク設定（tasks.jsonでも指定していますが、ここにも書くとより安全です）
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -81,11 +80,12 @@ void DirectXManager::EndRender() {
     m_swapChain->Present(1, 0);
 }
 
-void DirectXManager::DrawPlayer(float x, float y) {
-    // 座標をスクリーン座標(0~1280)からDirectXの座標(-1~1)へ変換
+void DirectXManager::DrawPlayer(float x, float y, float width, float height) {
     float nx = (x / 1280.0f) * 2.0f - 1.0f;
     float ny = 1.0f - (y / 720.0f) * 2.0f;
-    float w = 0.05f, h = 0.08f;
+    
+    float w = width; 
+    float h = height;
 
     Vertex vertices[] = {
         { { nx - w, ny + h, 0.0f }, { 1, 1, 1, 1 } },
@@ -94,7 +94,7 @@ void DirectXManager::DrawPlayer(float x, float y) {
         { { nx + w, ny - h, 0.0f }, { 1, 1, 1, 1 } },
     };
 
-    // 頂点バッファの作成
+    // --- バッファ作成と描画処理 ---
     D3D11_BUFFER_DESC bd = {};
     bd.Usage = D3D11_USAGE_DEFAULT;
     bd.ByteWidth = sizeof(vertices);
@@ -102,19 +102,15 @@ void DirectXManager::DrawPlayer(float x, float y) {
 
     D3D11_SUBRESOURCE_DATA sd = {};
     sd.pSysMem = vertices;
-    ComPtr<ID3D11Buffer> vertexBuffer;
+    Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
     m_device->CreateBuffer(&bd, &sd, &vertexBuffer);
 
-    // 描画設定
     UINT stride = sizeof(Vertex);
     UINT offset = 0;
     m_context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
     m_context->IASetInputLayout(m_inputLayout.Get());
     m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-    
     m_context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
     m_context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-
-    // 描画実行
     m_context->Draw(4, 0);
 }

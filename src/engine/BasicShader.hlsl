@@ -11,7 +11,7 @@ struct PS_INPUT {
 // 頂点シェーダー
 PS_INPUT VS(VS_INPUT input) {
     PS_INPUT output;
-    output.Pos = float4(input.Pos, 1.0f); // float4に正しく変換
+    output.Pos = float4(input.Pos, 1.0f); 
     output.Col = input.Col;
     return output;
 }

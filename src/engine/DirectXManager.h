@@ -9,7 +9,7 @@ public:
     HRESULT Init(HWND hWnd);
     void BeginRender();
     void EndRender();
-    void DrawPlayer(float x, float y);
+    void DrawPlayer(float x, float y, float width = 0.05f, float height = 0.08f);
 
 private:
     ComPtr<ID3D11Device>           m_device;
