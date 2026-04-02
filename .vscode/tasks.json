@@ -2,28 +2,43 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build-DirectX",
-            "type": "shell",
+            "type": "cppbuild",
+            "label": "C/C++: cl.exe アクティブなファイルのビルド",
             "command": "cl.exe",
             "args": [
                 "/Zi",
                 "/EHsc",
                 "/nologo",
-                "/DUNICODE",   
-                "/D_UNICODE",  
-                "/Fe:${workspaceFolder}/bin/MYSTG.exe",
-                "${workspaceFolder}/src/main.cpp",
-                "${workspaceFolder}/src/engine/DirectXManager.cpp",
+                "/utf-8",
+                "/DUNICODE",
+                "/D_UNICODE",
+                // 1. 生成されるエグゼの出力先を bin に指定
+                "/Fe${workspaceFolder}\\bin\\main.exe",
+                // 2. 中間ファイル(.obj)の出力先も bin に指定して src を汚さない
+                "/Fo${workspaceFolder}\\bin\\",
+                // 3. コンパイル対象のソースファイル
+                "${workspaceFolder}\\src\\main.cpp",
+                "${workspaceFolder}\\src\\engine\\DirectXManager.cpp",
+                // 4. リンクするライブラリ
                 "user32.lib",
                 "gdi32.lib",
+                "winmm.lib",
                 "d3d11.lib",
-                "dxgi.lib"
+                "dxgi.lib",
+                "d3dcompiler.lib"
+            ],
+            "options": {
+                // 実行時のカレントディレクトリを bin に設定
+                "cwd": "${workspaceFolder}\\bin"
+            },
+            "problemMatcher": [
+                "$msCompile"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": ["$msCompile"]
+            "detail": "成果物をbinフォルダに集約する設定"
         }
     ]
 }
