@@ -103,7 +103,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR lpCmd, int nShow)
             }
 
             g_bulletMgr.Update();
-            g_enemyMgr.Update(g_stageFrame);
+            g_enemyMgr.Update(g_stageFrame, g_playerX, g_playerY);
 
             g_dx.BeginRender();
 

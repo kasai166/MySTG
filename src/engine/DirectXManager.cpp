@@ -124,14 +124,16 @@ void DirectXManager::DrawEnemyCircle(float x, float y, float radius, int divisio
 
     std::vector<Vertex> vertices;
 
-    vertices.push_back({ {nx, ny, 0.0f}, {1, 0, 0, 1} }); 
+    for (int i = 0; i < divisions; ++i) {
+        float theta1 = (2.0f * 3.1415926f * i) / (float)divisions;
+        float theta2 = (2.0f * 3.1415926f * (i + 1)) / (float)divisions;
 
-    for (int i = 0; i <= divisions; ++i) {
-        float theta = (2.0f * 3.1415926f * i) / divisions;
-        vertices.push_back({
-            { nx + rx * cosf(theta), ny + ry * sinf(theta), 0.0f },
-            { 1, 1, 1, 1 } 
-        });
+        
+        vertices.push_back({ {nx, ny, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f} });
+        
+        vertices.push_back({ {nx + rx * cosf(theta1), ny + ry * sinf(theta1), 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f} });
+        
+        vertices.push_back({ {nx + rx * cosf(theta2), ny + ry * sinf(theta2), 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f} });
     }
     D3D11_BUFFER_DESC bd = {};
     bd.Usage = D3D11_USAGE_DEFAULT;
@@ -147,14 +149,18 @@ void DirectXManager::DrawEnemyCircle(float x, float y, float radius, int divisio
     UINT offset = 0;
     m_context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
     m_context->IASetInputLayout(m_inputLayout.Get());
-    
-  
-    m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-    
+    m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // LISTを指定
+
+
+    D3D11_RASTERIZER_DESC rd = {};
+    rd.FillMode = D3D11_FILL_SOLID;
+    rd.CullMode = D3D11_CULL_NONE; 
+    ComPtr<ID3D11RasterizerState> rs;
+    m_device->CreateRasterizerState(&rd, &rs);
+    m_context->RSSetState(rs.Get());
+
     m_context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
     m_context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-    
 
-    m_context->Draw((UINT)vertices.size(), 0);    // 作成した頂点数分描画
-
+    m_context->Draw((UINT)vertices.size(), 0);
 }

@@ -3,17 +3,18 @@
 
 class Enemy {
 public:
-    Enemy(float x, float y, int type);
-    void Update();
+    Enemy(float x, float y, int moveID, int shotID);
+    void Update(float playerX, float playerY); 
     void Draw(DirectXManager& dx);
     bool IsOut() const;
 
-    float GetX() const { return m_x; }
-    float GetY() const { return m_y; }
-
 private:
+    void MoveRoutine();
+    void ShotRoutine(float px, float py);
+
     float m_x, m_y;
-    float m_speed;
-    int   m_type;
-    bool  m_active;
+    int m_moveID;
+    int m_shotID;
+    int m_timer; 
+    bool m_active;
 };
