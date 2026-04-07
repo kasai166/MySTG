@@ -35,5 +35,5 @@ void EnemyManager::LoadStageData() {
     // 引数順: { 出現フレーム, X座標, 種類(type), 移動ID, 射撃ID }
     m_spawnTable.push_back({ 60,  640.0f, 0, 1, 0 });  
     m_spawnTable.push_back({ 120, 320.0f, 0, 0, 0 });  
-    m_spawnTable.push_back({ 120, 960.0f, 0, 0, 0 });  
+    m_spawnTable.push_back({ 120, 960.0f, 0, 3, 0 });  
 }
